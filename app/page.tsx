@@ -85,8 +85,17 @@ export default function Home() {
         <SocialProof />
       </section>
       <Features />
-      <div className="relative w-full max-w-4xl mx-auto mt-12 mb-8">
-        <Image src={"/example.png"} alt="Example" fill />
+      <div className="relative w-full max-w-[100%] mx-auto mt-12 mb-8 px-4">
+        <div className="relative w-full h-[800px]">
+          <Image
+            src={"/example.png"}
+            alt="Example"
+            fill
+            className="object-contain"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-transparent to-transparent pointer-events-none rounded-2xl"></div>
+        </div>
       </div>
 
       <Particles
