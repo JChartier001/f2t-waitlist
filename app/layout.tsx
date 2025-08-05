@@ -1,15 +1,16 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Figtree } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@vercel/analytics/react";
+import { Bricolage_Grotesque } from "next/font/google";
 
-const FigtreeFont = Figtree({ subsets: ["latin"] });
+import Providers from "@/components/Providers";
+import Header from "@/components/Header";
+
+const BricolageFont = Bricolage_Grotesque({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next.js + Notion — Waitlist Template",
+  title: "Farm2Table - Where local food meets modern connection",
   description:
-    "A simple Next.js waitlist template with Notion as CMS and Resend to send emails created with React Email and Upstash Redis for rate limiting. Deployed on Vercel.",
+    "Join the Farm2Table waitlist to connect with local farmers and access fresh, locally-sourced produce. Be the first to know when we launch.",
 };
 
 export default function RootLayout({
@@ -18,27 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <meta property="og:image" content="/opengraph-image.png" />
-      <meta property="og:image:type" content="image/png" />
-      <meta property="og:image:width" content="1280" />
-      <meta property="og:image:height" content="832" />
-      <meta
-        property="og:site_name"
-        content="Next.js + Notion — Waitlist Template"
-      />
-      <meta
-        property="og:url"
-        content="https://nextjs-notion-waitlist.vercel.app/"
-      />
-      <meta name="twitter:image" content="/twitter-image.png" />
-      <meta name="twitter:image:type" content="image/png" />
-      <meta name="twitter:image:width" content="1280" />
-      <meta name="twitter:image:height" content="832" />
-      <body className={FigtreeFont.className}>
-        {children}
-        <Toaster richColors position="top-center" />
-        <Analytics />
+    <html lang="en" suppressHydrationWarning>
+      <body className={BricolageFont.className}>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );

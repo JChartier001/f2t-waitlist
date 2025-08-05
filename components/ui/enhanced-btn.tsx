@@ -83,7 +83,7 @@ const EnhancedButton = React.forwardRef<
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, className }), "group")}
         ref={ref}
         {...props}>
         {Icon && iconPlacement === "left" && (
