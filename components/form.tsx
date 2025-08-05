@@ -1,7 +1,5 @@
-import Link from "next/link";
 import { ChangeEvent } from "react";
 import { motion } from "framer-motion";
-import { FaGithub, FaXTwitter } from "react-icons/fa6";
 import { Input } from "@/components/ui/input";
 import { MoveRight } from "lucide-react";
 import { EnhancedButton } from "@/components/ui/enhanced-btn";
