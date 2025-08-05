@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 
 import Providers from "@/components/Providers";
-import Header from "@/components/Header";
+import Navbar from "@/components/Navbar";
 
 const BricolageFont = Bricolage_Grotesque({ subsets: ["latin"] });
 
@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={BricolageFont.className}>
         <Providers>
-          <Header />
+          <Navbar />
           {children}
         </Providers>
       </body>
