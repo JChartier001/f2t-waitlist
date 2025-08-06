@@ -12,10 +12,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/backend": "^2.6.2",
-    "@clerk/clerk-react": "^5.25.0",
-    "@clerk/nextjs": "^6.12.6",
-    "@clerk/themes": "^2.4.4",
     "@convex-dev/auth": "^0.0.88",
     "@convex-dev/rate-limiter": "^0.2.12",
     "@convex-dev/resend": "^0.1.7",
