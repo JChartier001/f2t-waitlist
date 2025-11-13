@@ -1,5 +1,7 @@
 # Welcome to your Convex + Next.js + Clerk app
 
+![Tests](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/test.yml/badge.svg)
+
 This is a [Convex](https://convex.dev/) project created with [`npm create convex`](https://www.npmjs.com/package/create-convex).
 
 After the initial setup (<2 minutes) you'll have a working full-stack app using:
@@ -18,6 +20,32 @@ If you just cloned this codebase and didn't use `npm create convex`, run:
 npm install
 npm run dev
 ```
+
+## Testing
+
+This project includes comprehensive E2E tests using Playwright. See [TESTING.md](./TESTING.md) for detailed documentation.
+
+**Prerequisites:**
+- Convex backend must be deployed (tests use your deployed instance)
+- `NEXT_PUBLIC_CONVEX_URL` must be set in `.env.local`
+
+**Quick Start:**
+```bash
+# Run all tests
+yarn test
+
+# Run tests with UI
+yarn test:ui
+
+# Run tests in headed mode
+yarn test:headed
+```
+
+**GitHub Actions:**
+- Tests run automatically on pull requests
+- Requires `NEXT_PUBLIC_CONVEX_URL` secret in GitHub
+- Test results and screenshots uploaded on failure
+- See [TESTING.md](./TESTING.md#cicd-integration) for setup instructions
 
 If you're reading this README on GitHub and want to use this template, run:
 

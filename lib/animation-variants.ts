@@ -7,7 +7,7 @@ export const containerVariants = {
       delayChildren: 0.3,
     },
   },
-};
+} as const;
 
 export const itemVariants = {
   hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
@@ -19,4 +19,4 @@ export const itemVariants = {
       duration: 0.5,
     },
   },
-};
+} as const;
