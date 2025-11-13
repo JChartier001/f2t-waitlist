@@ -37,6 +37,7 @@ export default function Form({ onSubmit, loading }: FormProps) {
       reset();
     } catch (error) {
       // Don't reset form on error - keep user data visible
+      console.error("Form submission error:", error);
     }
   };
 
