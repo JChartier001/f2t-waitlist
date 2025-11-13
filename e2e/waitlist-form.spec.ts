@@ -15,10 +15,11 @@ class TestEmailTracker {
       try {
         // Call the Convex mutation through the app's API
         await page.evaluate(async (emailToDelete) => {
-          // Access the global Convex client from the app
+          // Access the global Convex client and API from the app
           const convexClient = (window as any).__convex_client__;
-          if (convexClient) {
-            await convexClient.mutation("waitlist:deleteWaitlistEntry", {
+          const api = (window as any).api;
+          if (convexClient && api && api.waitlist && api.waitlist.deleteWaitlistEntry) {
+            await convexClient.mutation(api.waitlist.deleteWaitlistEntry, {
               email: emailToDelete,
               testSecret: "test-only-secret", // Secret for test cleanup
             });
