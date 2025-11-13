@@ -5,9 +5,19 @@ import { action } from "./_generated/server";
 
 export const addToWaitlist = mutation({
   args: {
+    name: v.string(),
     email: v.string(),
+    userType: v.union(v.literal("vendor"), v.literal("consumer")),
   },
-  handler: async (ctx, args): Promise<{ success: boolean; waitlistId?: string; message?: string }> => {
+  handler: async (
+    ctx,
+    args,
+  ): Promise<{
+    success: boolean;
+    waitlistId?: string;
+    message?: string;
+    isUpdate?: boolean;
+  }> => {
     // Check if email already exists in waitlist
     const existing = await ctx.db
       .query("waitlist")
@@ -15,12 +25,36 @@ export const addToWaitlist = mutation({
       .first();
 
     if (existing) {
-      return { success: false, message: "Email already exists in waitlist" };
+      // Check if any details are different
+      const detailsChanged =
+        existing.name !== args.name || existing.userType !== args.userType;
+
+      if (detailsChanged) {
+        // Update the existing entry
+        await ctx.db.patch(existing._id, {
+          name: args.name,
+          userType: args.userType,
+        });
+        return {
+          success: true,
+          waitlistId: existing._id,
+          message: "Details updated successfully",
+          isUpdate: true,
+        };
+      } else {
+        // Same details, no need to update
+        return {
+          success: false,
+          message: "Email already exists in waitlist",
+        };
+      }
     }
 
     // Add to waitlist
     const waitlistId = await ctx.db.insert("waitlist", {
+      name: args.name,
       email: args.email,
+      userType: args.userType,
       createdAt: Date.now(),
     });
 
@@ -38,29 +72,52 @@ export const getWaitlistCount = query({
 
 export const joinWaitlist = action({
   args: {
+    name: v.string(),
     email: v.string(),
+    userType: v.union(v.literal("vendor"), v.literal("consumer")),
   },
-  handler: async (ctx, args): Promise<{ success: boolean; waitlistId?: string; message?: string; emailSent?: boolean }> => {
+  handler: async (
+    ctx,
+    args,
+  ): Promise<{
+    success: boolean;
+    waitlistId?: string;
+    message?: string;
+    emailSent?: boolean;
+    isUpdate?: boolean;
+  }> => {
     // Add to waitlist
-    const result: { success: boolean; waitlistId?: string; message?: string } = await ctx.runMutation(api.waitlist.addToWaitlist, {
+    const result: {
+      success: boolean;
+      waitlistId?: string;
+      message?: string;
+      isUpdate?: boolean;
+    } = await ctx.runMutation(api.waitlist.addToWaitlist, {
+      name: args.name,
       email: args.email,
+      userType: args.userType,
     });
 
     if (!result.success) {
-      return result;
+      // Throw an error so toast.promise can catch it
+      throw new Error(result.message || "Failed to add to waitlist");
     }
 
-    // Send welcome email
-    try {
-      await ctx.runAction(internal.email.sendWaitlistEmail, {
-        email: args.email,
-      });
-      
-      return { ...result, emailSent: true };
-    } catch (error) {
-      console.error("Failed to send welcome email:", error);
-      // Still return success for waitlist addition, just note email failed
-      return { ...result, emailSent: false };
+    // Send welcome email only for new signups, not updates
+    if (!result.isUpdate) {
+      try {
+        await ctx.runAction(internal.email.sendWaitlistEmail, {
+          email: args.email,
+        });
+
+        return { ...result, emailSent: true };
+      } catch (error) {
+        console.error("Failed to send welcome email:", error);
+        // Still return success for waitlist addition, just note email failed
+        return { ...result, emailSent: false };
+      }
     }
+
+    return { ...result };
   },
 });
