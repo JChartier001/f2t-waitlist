@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import CTA from "@/components/cta";
-import Form from "@/components/form";
+import Form, { FormData } from "@/components/form";
 import SocialProof from "@/components/social-proof";
 import Features from "@/components/features";
 import Particles from "@/components/ui/particles";
@@ -13,7 +13,6 @@ import { useTheme } from "@/components/ThemeProvider";
 import Image from "next/image";
 
 export default function Home() {
-  const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const { theme } = useTheme();
 
@@ -21,45 +20,33 @@ export default function Home() {
 
   const addToWaitlist = useAction(api.waitlist.joinWaitlist);
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleSubmit = async () => {
-    if (!email) {
-      toast.error("Please enter your email");
-      return;
-    }
-
-    if (!isValidEmail(email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-
+  const handleSubmit = async (data: FormData) => {
     setLoading(true);
 
-    const promise = addToWaitlist({ email });
+    const promise = addToWaitlist(data);
 
     toast.promise(promise, {
       pending: "Adding you to our harvest list... 🌾",
       success: {
-        render: "Welcome to the farm! We'll notify you when we launch 🥕",
-        onClose: () => setEmail(""),
+        render: ({ data }: { data: { isUpdate?: boolean } }) => {
+          if (data?.isUpdate) {
+            return "Your details have been updated! 🎉";
+          }
+          return "Welcome to the farm! We'll notify you when we launch 🥕";
+        },
         autoClose: 5000,
       },
       error: {
-        render: (error: unknown) => {
-          if (
-            error instanceof Error &&
-            error.message === "Email already exists in waitlist"
-          ) {
+        render: ({ data }: { data: unknown }) => {
+          // Handle Convex errors and standard errors
+          const errorMessage =
+            data instanceof Error ? data.message : String(data);
+
+          if (errorMessage.includes("Email already exists in waitlist")) {
             return "You're already on the waitlist!";
           }
+
+          // Don't show technical error messages to users
           return "Something went wrong. Please try again.";
         },
       },
@@ -75,12 +62,7 @@ export default function Home() {
       <section className="flex flex-col items-center px-4 sm:px-6 lg:px-8 pt-24">
         <CTA />
 
-        <Form
-          email={email}
-          handleEmailChange={handleEmailChange}
-          handleSubmit={handleSubmit}
-          loading={loading}
-        />
+        <Form onSubmit={handleSubmit} loading={loading} />
 
         <SocialProof />
       </section>
