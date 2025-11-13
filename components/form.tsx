@@ -44,13 +44,11 @@ export default function Form({ onSubmit, loading }: FormProps) {
   return (
     <motion.div
       className="mt-8 flex w-full max-w-md flex-col gap-4 items-center"
-      // @ts-expect-error - variants is valid but TS has issues with framer-motion types
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.form onSubmit={handleSubmit(handleFormSubmit)} className="w-full">
-        {/* @ts-expect-error - variants is valid but TS has issues with framer-motion types */}
         <motion.div variants={itemVariants} className="w-full">
           <div className="flex gap-4 justify-center mb-4">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -77,7 +75,6 @@ export default function Form({ onSubmit, loading }: FormProps) {
             </label>
           </div>
         </motion.div>
-        {/* @ts-expect-error - variants is valid but TS has issues with framer-motion types */}
         <motion.div
           variants={itemVariants}
           className="flex flex-col gap-3 w-full"
