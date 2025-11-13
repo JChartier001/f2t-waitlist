@@ -31,7 +31,7 @@ jobs:
         run: yarn test
         env:
           CI: true
-          CONVEX_DEPLOYMENT: ${{ secrets.CONVEX_DEPLOYMENT }}
+          NEXT_PUBLIC_CONVEX_URL: ${{ secrets.NEXT_PUBLIC_CONVEX_URL }}
 
       - name: Upload test results
         if: failure()

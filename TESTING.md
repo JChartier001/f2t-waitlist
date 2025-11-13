@@ -148,11 +148,11 @@ The project includes a GitHub Actions workflow (`.github/workflows/test.yml`) th
 
 ### Setup GitHub Actions
 
-1. **Add Convex Deployment Secret** (if using Convex Cloud):
+1. **Add Convex URL Secret**:
    - Go to your GitHub repository settings
    - Navigate to `Settings` → `Secrets and variables` → `Actions`
    - Add a new repository secret:
-     - Name: `CONVEX_DEPLOYMENT`
+     - Name: `NEXT_PUBLIC_CONVEX_URL`
      - Value: Your Convex deployment URL (e.g., `https://your-deployment.convex.cloud`)
 
 2. **Commit and push the workflow**:
@@ -175,14 +175,31 @@ The project includes a GitHub Actions workflow (`.github/workflows/test.yml`) th
 ### Local vs CI Differences
 
 **Local Development:**
-- Tests start the dev server automatically
-- Uses your local Convex deployment
+- Tests start the Next.js dev server automatically (`yarn dev:frontend`)
+- Uses your deployed Convex instance from `.env.local`
+- Requires `NEXT_PUBLIC_CONVEX_URL` to be set
 
 **GitHub Actions:**
 - Tests run in headless mode
-- Requires `CONVEX_DEPLOYMENT` secret for backend
+- Requires `NEXT_PUBLIC_CONVEX_URL` environment variable
 - Uploads artifacts on failure
 - Retries failed tests (configured in `playwright.config.ts`)
+
+### Setup for Testing
+
+1. **Ensure Convex is deployed:**
+   ```bash
+   npx convex dev  # This deploys to your dev deployment
+   ```
+
+2. **Verify environment variables:**
+   - Local: `NEXT_PUBLIC_CONVEX_URL` should be in `.env.local`
+   - CI: Add `NEXT_PUBLIC_CONVEX_URL` as a GitHub secret
+
+3. **Run tests:**
+   ```bash
+   yarn test
+   ```
 
 ## Debugging
 
@@ -220,8 +237,10 @@ npx playwright show-report
 
 - Node.js 18+
 - Yarn
-- Running Convex backend (auto-started by tests)
-- Playwright browsers (auto-installed on first run)
+- **Deployed Convex backend** - Tests connect to your deployed Convex instance (dev or prod)
+  - Ensure `NEXT_PUBLIC_CONVEX_URL` is set in your `.env.local`
+  - Tests use `yarn dev:frontend` to avoid Convex login prompts
+- Browsers installed for Playwright (auto-installed on first run)
 
 ## Troubleshooting
 
