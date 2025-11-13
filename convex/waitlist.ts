@@ -70,6 +70,26 @@ export const getWaitlistCount = query({
   },
 });
 
+// Test utility function to delete a waitlist entry by email
+export const deleteWaitlistEntry = mutation({
+  args: {
+    email: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const entry = await ctx.db
+      .query("waitlist")
+      .filter((q) => q.eq(q.field("email"), args.email))
+      .first();
+
+    if (entry) {
+      await ctx.db.delete(entry._id);
+      return { success: true };
+    }
+
+    return { success: false, message: "Entry not found" };
+  },
+});
+
 export const joinWaitlist = action({
   args: {
     name: v.string(),

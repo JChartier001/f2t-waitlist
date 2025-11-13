@@ -1,8 +1,46 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
+
+// Helper to generate and track test emails for cleanup
+class TestEmailTracker {
+  private emails: string[] = [];
+
+  generateEmail(prefix: string = "test"): string {
+    const email = `${prefix}${Date.now()}@example.com`;
+    this.emails.push(email);
+    return email;
+  }
+
+  async cleanup(page: Page) {
+    for (const email of this.emails) {
+      try {
+        // Call the Convex mutation through the app's API
+        await page.evaluate(async (emailToDelete) => {
+          // Access the global Convex client from the app
+          const convexClient = (window as any).__convex_client__;
+          if (convexClient) {
+            await convexClient.mutation("waitlist:deleteWaitlistEntry", {
+              email: emailToDelete,
+            });
+          }
+        }, email);
+      } catch (error) {
+        // Silently ignore cleanup errors (entry might not exist)
+      }
+    }
+    this.emails = [];
+  }
+}
 
 test.describe("Waitlist Form", () => {
+  let emailTracker: TestEmailTracker;
+
   test.beforeEach(async ({ page }) => {
+    emailTracker = new TestEmailTracker();
     await page.goto("/");
+  });
+
+  test.afterEach(async ({ page }) => {
+    await emailTracker.cleanup(page);
   });
 
   test("should display the form correctly", async ({ page }) => {
@@ -70,8 +108,7 @@ test.describe("Waitlist Form", () => {
   test("should successfully submit the form with valid data", async ({
     page,
   }) => {
-    const timestamp = Date.now();
-    const testEmail = `test${timestamp}@example.com`;
+    const testEmail = emailTracker.generateEmail("test");
 
     // Fill the form
     await page.getByPlaceholder("Your name").fill("John Doe");
@@ -90,8 +127,7 @@ test.describe("Waitlist Form", () => {
   test("should show error when submitting duplicate email with same details", async ({
     page,
   }) => {
-    const timestamp = Date.now();
-    const testEmail = `duplicate${timestamp}@example.com`;
+    const testEmail = emailTracker.generateEmail("duplicate");
 
     // Submit first time
     await page.getByPlaceholder("Your name").fill("John Doe");
@@ -104,7 +140,9 @@ test.describe("Waitlist Form", () => {
     });
 
     // Wait for toast to disappear
-    await page.waitForTimeout(6000);
+    await expect(page.getByText(/welcome to the farm/i)).not.toBeVisible({
+      timeout: 6000,
+    });
 
     // Submit again with same details
     await page.getByPlaceholder("Your name").fill("John Doe");
@@ -118,8 +156,7 @@ test.describe("Waitlist Form", () => {
   });
 
   test("should allow updating from consumer to vendor", async ({ page }) => {
-    const timestamp = Date.now();
-    const testEmail = `update${timestamp}@example.com`;
+    const testEmail = emailTracker.generateEmail("update");
 
     // Submit as consumer first
     await page.getByPlaceholder("Your name").fill("John Doe");
@@ -133,7 +170,9 @@ test.describe("Waitlist Form", () => {
     });
 
     // Wait for toast to disappear
-    await page.waitForTimeout(6000);
+    await expect(page.getByText(/welcome to the farm/i)).not.toBeVisible({
+      timeout: 6000,
+    });
 
     // Submit again as vendor
     await page.getByPlaceholder("Your name").fill("John Doe");
@@ -150,8 +189,7 @@ test.describe("Waitlist Form", () => {
   test("should show pending toast message while submitting", async ({
     page,
   }) => {
-    const timestamp = Date.now();
-    const testEmail = `pending${timestamp}@example.com`;
+    const testEmail = emailTracker.generateEmail("pending");
 
     await page.getByPlaceholder("Your name").fill("John Doe");
     await page.getByPlaceholder("Your email").fill(testEmail);

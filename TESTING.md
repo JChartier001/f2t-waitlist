@@ -83,32 +83,46 @@ test.describe("Feature Name", () => {
 });
 ```
 
+### Test Data Cleanup
+
+Tests automatically clean up data after each test run using the `TestEmailTracker` helper class:
+
+- Generates unique test emails with timestamps
+- Tracks all created emails during the test
+- Automatically deletes entries via Convex after test completes
+- Prevents test data pollution in your database
+
+**Usage in tests:**
+
+```typescript
+const testEmail = emailTracker.generateEmail("test");
+// Email is automatically tracked and cleaned up after test
+```
+
 ### Best Practices
 
-1. **Use unique test data**: Generate unique emails with timestamps to avoid conflicts
+1. **Use the email tracker**: Always use `emailTracker.generateEmail()` for test emails
 
    ```typescript
-   const testEmail = `test${Date.now()}@example.com`;
+   const testEmail = emailTracker.generateEmail("test");
    ```
 
-2. **Wait for elements**: Use Playwright's auto-waiting features
+2. **Wait for elements**: Use Playwright's auto-waiting features, not `waitForTimeout`
 
    ```typescript
+   // Good: Wait for element to appear/disappear
    await expect(page.getByText("Success")).toBeVisible({ timeout: 10000 });
+   await expect(page.getByText("Loading")).not.toBeVisible({ timeout: 5000 });
+   
+   // Bad: Fixed timeouts (anti-pattern)
+   await page.waitForTimeout(5000); // Don't do this!
    ```
 
-3. **Clean test data**: Each test should be independent
+3. **Test user flows**: Focus on complete workflows, not individual functions
 
-   ```typescript
-   test("should submit form", async ({ page }) => {
-     const uniqueEmail = `test${Date.now()}@example.com`;
-     // ... use uniqueEmail
-   });
-   ```
+4. **Descriptive test names**: Use clear, action-oriented descriptions
 
-4. **Test user flows**: Focus on complete workflows, not individual functions
-
-5. **Descriptive test names**: Use clear, action-oriented descriptions
+5. **Cleanup is automatic**: The `emailTracker` handles data cleanup - you don't need to worry about it
 
 ## CI/CD Integration
 
