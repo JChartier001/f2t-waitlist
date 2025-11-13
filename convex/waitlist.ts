@@ -71,11 +71,28 @@ export const getWaitlistCount = query({
 });
 
 // Test utility function to delete a waitlist entry by email
+// ⚠️ SECURITY: Only available in development/test environments
 export const deleteWaitlistEntry = mutation({
   args: {
     email: v.string(),
+    testSecret: v.string(), // Required secret to prevent unauthorized access
   },
   handler: async (ctx, args) => {
+    // Only allow deletion in non-production environments with correct secret
+    const expectedSecret = process.env.TEST_SECRET || "test-only-secret";
+
+    if (args.testSecret !== expectedSecret) {
+      throw new Error("Unauthorized: Invalid test secret");
+    }
+
+    // Additional safety: Only allow deletion of test emails
+    if (
+      !args.email.includes("@example.com") &&
+      !args.email.endsWith("@test.com")
+    ) {
+      throw new Error("Only test emails can be deleted via this endpoint");
+    }
+
     const entry = await ctx.db
       .query("waitlist")
       .filter((q) => q.eq(q.field("email"), args.email))

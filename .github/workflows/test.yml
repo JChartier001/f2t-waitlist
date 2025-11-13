@@ -21,6 +21,18 @@ jobs:
           node-version-file: "package.json"
           cache: "yarn"
 
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: yarn test
+        env:
+          CI: true
+          CONVEX_DEPLOYMENT: ${{ secrets.CONVEX_DEPLOYMENT }}
+
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v4

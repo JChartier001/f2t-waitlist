@@ -20,11 +20,12 @@ class TestEmailTracker {
           if (convexClient) {
             await convexClient.mutation("waitlist:deleteWaitlistEntry", {
               email: emailToDelete,
+              testSecret: "test-only-secret", // Secret for test cleanup
             });
           }
         }, email);
       } catch (error) {
-        // Silently ignore cleanup errors (entry might not exist)
+        // Silently ignore cleanup errors (entry might not exist or secret mismatch)
       }
     }
     this.emails = [];

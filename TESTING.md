@@ -87,16 +87,23 @@ test.describe("Feature Name", () => {
 
 Tests automatically clean up data after each test run using the `TestEmailTracker` helper class:
 
-- Generates unique test emails with timestamps
+- Generates unique test emails with timestamps (always `@example.com` or `@test.com`)
 - Tracks all created emails during the test
 - Automatically deletes entries via Convex after test completes
 - Prevents test data pollution in your database
+
+**Security Measures:**
+- Cleanup mutation requires a secret token (`TEST_SECRET`)
+- Only allows deletion of `@example.com` and `@test.com` domains
+- Prevents unauthorized deletion of real user data
+- Test secret is hardcoded in test files (not a production secret)
 
 **Usage in tests:**
 
 ```typescript
 const testEmail = emailTracker.generateEmail("test");
 // Email is automatically tracked and cleaned up after test
+// Generates: test1234567890@example.com
 ```
 
 ### Best Practices
