@@ -27,7 +27,8 @@ export const addToWaitlist = mutation({
     if (existing) {
       // Check if any details are different
       const detailsChanged =
-        existing.name !== args.name || existing.userType !== args.userType;
+        (existing.name !== undefined && existing.name !== args.name) ||
+        (existing.userType !== undefined && existing.userType !== args.userType);
 
       if (detailsChanged) {
         // Update the existing entry
