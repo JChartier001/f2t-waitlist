@@ -13,8 +13,7 @@ export const addToWaitlist = mutation({
     ctx,
     args,
   ): Promise<{
-    success: boolean;
-    waitlistId?: string;
+    waitlistId: string;
     message?: string;
     isUpdate?: boolean;
   }> => {
@@ -37,17 +36,13 @@ export const addToWaitlist = mutation({
           userType: args.userType,
         });
         return {
-          success: true,
           waitlistId: existing._id,
           message: "Details updated successfully",
           isUpdate: true,
         };
       } else {
         // Same details, no need to update
-        return {
-          success: false,
-          message: "Email already exists in waitlist",
-        };
+        throw new Error("Email already exists in waitlist");
       }
     }
 
@@ -59,7 +54,7 @@ export const addToWaitlist = mutation({
       createdAt: Date.now(),
     });
 
-    return { success: true, waitlistId };
+    return { waitlistId };
   },
 });
 
@@ -118,16 +113,14 @@ export const joinWaitlist = action({
     ctx,
     args,
   ): Promise<{
-    success: boolean;
-    waitlistId?: string;
+    waitlistId: string;
     message?: string;
     emailSent?: boolean;
     isUpdate?: boolean;
   }> => {
     // Add to waitlist
     const result: {
-      success: boolean;
-      waitlistId?: string;
+      waitlistId: string;
       message?: string;
       isUpdate?: boolean;
     } = await ctx.runMutation(api.waitlist.addToWaitlist, {
@@ -135,11 +128,6 @@ export const joinWaitlist = action({
       email: args.email,
       userType: args.userType,
     });
-
-    if (!result.success) {
-      // Throw an error so toast.promise can catch it
-      throw new Error(result.message || "Failed to add to waitlist");
-    }
 
     // Send welcome email only for new signups, not updates
     if (!result.isUpdate) {
