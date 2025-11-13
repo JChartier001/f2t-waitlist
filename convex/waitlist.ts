@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { mutation, query, internalMutation } from "./_generated/server";
 import { api, internal } from "./_generated/api";
 import { action } from "./_generated/server";
 
@@ -70,21 +70,13 @@ export const getWaitlistCount = query({
   },
 });
 
-// Test utility function to delete a waitlist entry by email
-// ⚠️ SECURITY: Only available in development/test environments
-export const deleteWaitlistEntry = mutation({
+// Internal mutation to delete a waitlist entry by email
+// This is not exposed publicly and can only be called by other Convex functions
+export const deleteWaitlistEntryInternal = internalMutation({
   args: {
     email: v.string(),
-    testSecret: v.string(), // Required secret to prevent unauthorized access
   },
   handler: async (ctx, args) => {
-    // Only allow deletion in non-production environments with correct secret
-    const expectedSecret = process.env.TEST_SECRET || "test-only-secret";
-
-    if (args.testSecret !== expectedSecret) {
-      throw new Error("Unauthorized: Invalid test secret");
-    }
-
     // Additional safety: Only allow deletion of test emails
     if (
       !args.email.includes("@example.com") &&
@@ -104,6 +96,22 @@ export const deleteWaitlistEntry = mutation({
     }
 
     return { success: false, message: "Entry not found" };
+  },
+});
+
+// Public action for test cleanup - restricted to test email domains
+// ⚠️ WARNING: This function should only be used in development/test environments
+// It is restricted to @example.com and @test.com domains only
+// For production use, consider removing this function or using proper authentication
+export const deleteWaitlistEntry = action({
+  args: {
+    email: v.string(),
+  },
+  handler: async (ctx, args) => {
+    // Call the internal mutation which enforces email domain restrictions
+    return await ctx.runMutation(internal.waitlist.deleteWaitlistEntryInternal, {
+      email: args.email,
+    });
   },
 });
 

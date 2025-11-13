@@ -18,9 +18,8 @@ class TestEmailTracker {
           // Access the global Convex client from the app
           const convexClient = (window as any).__convex_client__;
           if (convexClient) {
-            await convexClient.mutation("waitlist:deleteWaitlistEntry", {
+            await convexClient.action("waitlist:deleteWaitlistEntry", {
               email: emailToDelete,
-              testSecret: "test-only-secret", // Secret for test cleanup
             });
           }
         }, email);

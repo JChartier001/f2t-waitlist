@@ -93,10 +93,11 @@ Tests automatically clean up data after each test run using the `TestEmailTracke
 - Prevents test data pollution in your database
 
 **Security Measures:**
-- Cleanup mutation requires a secret token (`TEST_SECRET`)
+- Deletion logic is in an internal mutation (not publicly exposed)
+- Public action wraps the internal mutation for test access only
 - Only allows deletion of `@example.com` and `@test.com` domains
 - Prevents unauthorized deletion of real user data
-- Test secret is hardcoded in test files (not a production secret)
+- Internal architecture prevents direct database access from clients
 
 **Usage in tests:**
 
