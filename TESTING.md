@@ -155,14 +155,19 @@ The project includes a GitHub Actions workflow (`.github/workflows/test.yml`) th
      - Name: `NEXT_PUBLIC_CONVEX_URL`
      - Value: Your Convex deployment URL (e.g., `https://your-deployment.convex.cloud`)
 
-2. **Commit and push the workflow**:
+2. **Workflow Configuration**:
+   - The workflow uses Corepack to ensure Yarn 4.11.0 is used
+   - Node.js version is read from `package.json`
+   - Dependencies are cached for faster runs
+
+3. **Commit and push the workflow**:
    ```bash
    git add .github/workflows/test.yml
    git commit -m "Add E2E test workflow"
    git push
    ```
 
-3. **Create a pull request** - Tests will run automatically!
+4. **Create a pull request** - Tests will run automatically!
 
 ### Viewing Test Results
 
