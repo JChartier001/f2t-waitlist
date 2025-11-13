@@ -25,7 +25,7 @@ class TestEmailTracker {
           }
         }, email);
       } catch (error) {
-        // Silently ignore cleanup errors (entry might not exist or secret mismatch)
+        console.warn(`Failed to cleanup test email ${email}:`, error);
       }
     }
     this.emails = [];
