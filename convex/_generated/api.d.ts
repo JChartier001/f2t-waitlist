@@ -77,7 +77,7 @@ export declare const components: {
           headers?: Array<{ name: string; value: string }>;
           replyTo?: Array<string>;
           subject: string;
-          to: string;
+          to: Array<string> | string;
         },
         string
       >;
@@ -86,9 +86,15 @@ export declare const components: {
         "internal",
         { emailId: string },
         {
+          bcc?: Array<string>;
+          bounced?: boolean;
+          cc?: Array<string>;
+          clicked?: boolean;
           complained: boolean;
           createdAt: number;
+          deliveryDelayed?: boolean;
           errorMessage?: string;
+          failed?: boolean;
           finalizedAt: number;
           from: string;
           headers?: Array<{ name: string; value: string }>;
@@ -106,9 +112,13 @@ export declare const components: {
             | "delivery_delayed"
             | "bounced"
             | "failed";
-          subject: string;
+          subject?: string;
+          template?: {
+            id: string;
+            variables?: Record<string, string | number>;
+          };
           text?: string;
-          to: string;
+          to: Array<string>;
         } | null
       >;
       getStatus: FunctionReference<
@@ -116,8 +126,12 @@ export declare const components: {
         "internal",
         { emailId: string },
         {
+          bounced: boolean;
+          clicked: boolean;
           complained: boolean;
+          deliveryDelayed: boolean;
           errorMessage: string | null;
+          failed: boolean;
           opened: boolean;
           status:
             | "waiting"
@@ -140,6 +154,8 @@ export declare const components: {
         "mutation",
         "internal",
         {
+          bcc?: Array<string>;
+          cc?: Array<string>;
           from: string;
           headers?: Array<{ name: string; value: string }>;
           html?: string;
@@ -151,9 +167,13 @@ export declare const components: {
             testMode: boolean;
           };
           replyTo?: Array<string>;
-          subject: string;
+          subject?: string;
+          template?: {
+            id: string;
+            variables?: Record<string, string | number>;
+          };
           text?: string;
-          to: string;
+          to: Array<string>;
         },
         string
       >;

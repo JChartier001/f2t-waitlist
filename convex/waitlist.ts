@@ -1,6 +1,7 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+
 import { api, internal } from "./_generated/api";
+import { mutation, query } from "./_generated/server";
 import { action } from "./_generated/server";
 
 export const addToWaitlist = mutation({
@@ -27,7 +28,8 @@ export const addToWaitlist = mutation({
       // Check if any details are different
       const detailsChanged =
         (existing.name !== undefined && existing.name !== args.name) ||
-        (existing.userType !== undefined && existing.userType !== args.userType);
+        (existing.userType !== undefined &&
+          existing.userType !== args.userType);
 
       if (detailsChanged) {
         // Update the existing entry

@@ -1,0 +1,25 @@
+name: Verify PR - Checking Code Typescript
+on: [pull_request]
+
+jobs:
+  formatting:
+    name: Checking Code Typescript
+    runs-on: ubuntu-latest
+    env:
+      NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+      NODE_OPTIONS: "--max-old-space-size=4096"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Check Typescript
+        run: yarn typescript

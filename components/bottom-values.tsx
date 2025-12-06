@@ -1,15 +1,16 @@
 import { motion } from "framer-motion";
-import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import {
+  Clock4Icon,
+  Heart,
   Map,
   Navigation,
-  Clock4Icon,
   Smartphone,
-  Zap,
-  Heart,
-  Upload,
   Sparkles,
+  Upload,
+  Zap,
 } from "lucide-react";
+
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
 const values = [
   {
     icon: <Map className="text-3xl mb-3" />,
@@ -62,7 +63,11 @@ export default function BottomValues() {
       animate="visible"
     >
       {values.map((value, index) => (
-        <motion.div key={index} variants={itemVariants} className="text-center ">
+        <motion.div
+          key={index}
+          variants={itemVariants}
+          className="text-center "
+        >
           <div className="text-3xl mb-3">{value.icon}</div>
           <h3 className="font-semibold text-lg text-gray-900 mb-2">
             {value.title}

@@ -93,6 +93,7 @@ Tests automatically clean up data after each test run using the `TestEmailTracke
 - Prevents test data pollution in your database
 
 **Security Measures:**
+
 - Cleanup mutation requires a secret token (`TEST_SECRET`)
 - Only allows deletion of `@example.com` and `@test.com` domains
 - Prevents unauthorized deletion of real user data
@@ -120,7 +121,7 @@ const testEmail = emailTracker.generateEmail("test");
    // Good: Wait for element to appear/disappear
    await expect(page.getByText("Success")).toBeVisible({ timeout: 10000 });
    await expect(page.getByText("Loading")).not.toBeVisible({ timeout: 5000 });
-   
+
    // Bad: Fixed timeouts (anti-pattern)
    await page.waitForTimeout(5000); // Don't do this!
    ```
@@ -136,10 +137,12 @@ const testEmail = emailTracker.generateEmail("test");
 ### GitHub Actions
 
 The project includes a GitHub Actions workflow (`.github/workflows/test.yml`) that automatically runs tests on:
+
 - Pull requests to `main` or `master` branches
 - Direct pushes to `main` or `master` branches
 
 **Features:**
+
 - ✅ Automatic test execution on PRs
 - ✅ Test result artifacts uploaded on failure
 - ✅ Screenshots and traces for debugging
@@ -161,6 +164,7 @@ The project includes a GitHub Actions workflow (`.github/workflows/test.yml`) th
    - Dependencies are cached for faster runs
 
 3. **Commit and push the workflow**:
+
    ```bash
    git add .github/workflows/test.yml
    git commit -m "Add E2E test workflow"
@@ -180,11 +184,13 @@ The project includes a GitHub Actions workflow (`.github/workflows/test.yml`) th
 ### Local vs CI Differences
 
 **Local Development:**
+
 - Tests start the Next.js dev server automatically (`yarn dev:frontend`)
 - Uses your deployed Convex instance from `.env.local`
 - Requires `NEXT_PUBLIC_CONVEX_URL` to be set
 
 **GitHub Actions:**
+
 - Tests run in headless mode
 - Requires `NEXT_PUBLIC_CONVEX_URL` environment variable
 - Uploads artifacts on failure
@@ -193,6 +199,7 @@ The project includes a GitHub Actions workflow (`.github/workflows/test.yml`) th
 ### Setup for Testing
 
 1. **Ensure Convex is deployed:**
+
    ```bash
    npx convex dev  # This deploys to your dev deployment
    ```

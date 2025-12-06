@@ -1,9 +1,10 @@
 import "./globals.css";
+
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 
-import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
+import Providers from "@/components/Providers";
 
 const BricolageFont = Bricolage_Grotesque({ subsets: ["latin"] });
 

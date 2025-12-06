@@ -4,7 +4,6 @@ import {
   Head,
   Hr,
   Html,
-  Img,
   Preview,
   Text,
 } from "@react-email/components";
@@ -76,11 +75,6 @@ const container = {
   maxWidth: "600px",
 };
 
-const logo = {
-  margin: "0 auto",
-  paddingBottom: "20px",
-};
-
 const logoEmoji = {
   fontSize: "48px",
   textAlign: "center" as const,
@@ -97,11 +91,6 @@ const paragraph = {
   fontSize: "16px",
   lineHeight: "26px",
   marginBottom: "20px",
-};
-
-const link = {
-  color: "#FFB84D",
-  textDecoration: "underline",
 };
 
 const signOff = {

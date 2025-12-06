@@ -1,4 +1,4 @@
-import { test, expect, Page } from "@playwright/test";
+import { expect, Page, test } from "@playwright/test";
 
 // Helper to generate and track test emails for cleanup
 class TestEmailTracker {
@@ -18,7 +18,12 @@ class TestEmailTracker {
           // Access the global Convex client and API from the app
           const convexClient = (window as any).__convex_client__;
           const api = (window as any).api;
-          if (convexClient && api && api.waitlist && api.waitlist.deleteWaitlistEntry) {
+          if (
+            convexClient &&
+            api &&
+            api.waitlist &&
+            api.waitlist.deleteWaitlistEntry
+          ) {
             await convexClient.mutation(api.waitlist.deleteWaitlistEntry, {
               email: emailToDelete,
               testSecret: "test-only-secret", // Secret for test cleanup

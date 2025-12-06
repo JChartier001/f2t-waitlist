@@ -1,0 +1,22 @@
+name: Verify PR - Code Formatting
+on: [pull_request]
+
+jobs:
+  formatting:
+    name: Code Formatting (Prettier)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Check Formatting
+        run: yarn formatting

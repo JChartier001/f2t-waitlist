@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import Logo from "./Logo";
+import React from "react";
 import { FaInstagram, FaSquareFacebook } from "react-icons/fa6";
+
+import Logo from "./Logo";
 
 const Header = () => {
   return (

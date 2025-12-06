@@ -1,15 +1,16 @@
 import { motion } from "framer-motion";
-import { containerVariants, itemVariants } from "@/lib/animation-variants";
 import {
+  Clock4Icon,
+  Heart,
   Map,
   Navigation,
-  Clock4Icon,
   Smartphone,
-  Zap,
-  Heart,
-  Upload,
   Sparkles,
+  Upload,
+  Zap,
 } from "lucide-react";
+
+import { containerVariants, itemVariants } from "@/lib/animation-variants";
 
 const features = [
   {

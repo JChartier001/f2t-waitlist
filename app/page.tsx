@@ -1,16 +1,17 @@
 "use client";
 
-import { toast } from "react-toastify";
-import { useState } from "react";
 import { useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import Image from "next/image";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 import CTA from "@/components/cta";
+import Features from "@/components/features";
 import Form, { FormData } from "@/components/form";
 import SocialProof from "@/components/social-proof";
-import Features from "@/components/features";
-import Particles from "@/components/ui/particles";
 import { useTheme } from "@/components/ThemeProvider";
-import Image from "next/image";
+import Particles from "@/components/ui/particles";
+import { api } from "@/convex/_generated/api";
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);

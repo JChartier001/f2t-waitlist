@@ -1,11 +1,11 @@
 "use client";
-import { motion } from "framer-motion";
-import { itemVariants } from "@/lib/animation-variants";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-
 import { faker } from "@faker-js/faker";
+import { useQuery } from "convex/react";
+import { motion } from "framer-motion";
+
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { api } from "@/convex/_generated/api";
+import { itemVariants } from "@/lib/animation-variants";
 
 export default function SocialProof() {
   const count = useQuery(api.waitlist.getWaitlistCount) || 0;

@@ -26,10 +26,12 @@ npm run dev
 This project includes comprehensive E2E tests using Playwright. See [TESTING.md](./TESTING.md) for detailed documentation.
 
 **Prerequisites:**
+
 - Convex backend must be deployed (tests use your deployed instance)
 - `NEXT_PUBLIC_CONVEX_URL` must be set in `.env.local`
 
 **Quick Start:**
+
 ```bash
 # Run all tests
 yarn test
@@ -42,6 +44,7 @@ yarn test:headed
 ```
 
 **GitHub Actions:**
+
 - Tests run automatically on pull requests
 - Requires `NEXT_PUBLIC_CONVEX_URL` secret in GitHub
 - Test results and screenshots uploaded on failure

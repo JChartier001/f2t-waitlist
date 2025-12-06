@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
 import { MoveRight } from "lucide-react";
+import { useForm } from "react-hook-form";
+
 import { EnhancedButton } from "@/components/ui/enhanced-btn";
+import { Input } from "@/components/ui/input";
 import { containerVariants, itemVariants } from "@/lib/animation-variants";
 
 export interface FormData {

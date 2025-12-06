@@ -1,6 +1,6 @@
 "use client";
 
-import ConvexClientProvider from "./ConvexClientProvider";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import ToastProvider from "./Toast";
 

@@ -1,7 +1,8 @@
 import { Resend } from "@convex-dev/resend";
-import { components, internal } from "./_generated/api";
-import { internalMutation, internalAction } from "./_generated/server";
 import { v } from "convex/values";
+
+import { components, internal } from "./_generated/api";
+import { internalAction, internalMutation } from "./_generated/server";
 
 // Initialize Resend with the component - disable test mode for production
 export const resend = new Resend(components.resend, {
@@ -12,7 +13,7 @@ export const resend = new Resend(components.resend, {
 export const sendEmail = internalMutation({
   args: {
     from: v.string(),
-    to: v.string(),
+    to: v.array(v.string()),
     subject: v.string(),
     html: v.string(),
   },
@@ -82,7 +83,7 @@ export const sendWaitlistEmail = internalAction({
     // Send the email
     await ctx.runMutation(internal.email.sendEmail, {
       from: "Farm2Table <customerservice@farm2table.app>",
-      to: args.email,
+      to: [args.email],
       subject: "Welcome to Farm2Table! 🥕",
       html,
     });

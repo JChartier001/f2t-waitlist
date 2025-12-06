@@ -1,0 +1,22 @@
+name: Verify PR - Code Linting
+on: [pull_request]
+
+jobs:
+  formatting:
+    name: Code Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Check Linting
+        run: yarn lint
