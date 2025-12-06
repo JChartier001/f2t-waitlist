@@ -2,7 +2,7 @@ name: Verify PR - Checking Code Typescript
 on: [pull_request]
 
 jobs:
-  formatting:
+  type-check:
     name: Checking Code Typescript
     runs-on: ubuntu-latest
     env:
@@ -17,6 +17,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: "package.json"
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
         run: yarn install --immutable

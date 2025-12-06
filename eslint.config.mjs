@@ -74,9 +74,6 @@ const eslintConfig = defineConfig([
     "node_modules/**",
     "*.config.js",
     "convex/_generated/**",
-    "*.config.js",
-    "*.test.ts",
-    "*.test.tsx",
   ]),
 ]);
 
