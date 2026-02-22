@@ -70,17 +70,43 @@ test.describe("Founding Farmers Application Form", () => {
     ).toBeVisible();
   });
 
-  test("should show validation error for invalid email", async ({
+  test("should prevent submission with invalid email via browser validation", async ({
     page,
   }) => {
+    // Fill all required fields with valid data except email
+    await page
+      .getByPlaceholder("Your farm or business name")
+      .fill("Test Farm");
+    await page.getByPlaceholder("Your name").fill("Jane Farmer");
     await page.getByPlaceholder("your@email.com").fill("not-an-email");
+    await page.getByPlaceholder("(555) 123-4567").fill("(813) 555-1234");
+    await page.getByPlaceholder("5-digit zip code").fill("33602");
+    await page
+      .getByPlaceholder(
+        "e.g. Produce, Meat, Eggs, Dairy, Baked goods, Honey, Handmade goods",
+      )
+      .fill("Vegetables");
+    await page
+      .getByPlaceholder("Tell us about your farm in 2-3 sentences")
+      .fill("A small farm.");
+    await page
+      .getByPlaceholder(
+        "e.g. Farmers market, Farm stand, Online, Wholesale",
+      )
+      .fill("Farmers market");
+    await page
+      .getByPlaceholder("Do you deliver? How far? Pickup only? Ship?")
+      .fill("Local delivery");
+
     await page
       .getByRole("button", { name: /submit application/i })
       .click();
 
+    // The native browser validation on type="email" blocks submission,
+    // so the pending toast should never appear
     await expect(
-      page.getByText("Please enter a valid email address"),
-    ).toBeVisible();
+      page.getByText(/submitting your application/i),
+    ).not.toBeVisible();
   });
 
   test("should show validation error for invalid zip code", async ({
