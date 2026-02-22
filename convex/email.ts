@@ -44,15 +44,15 @@ const getWaitlistEmailHTML = (email: string) => {
     <p style="font-size: 18px; line-height: 28px;">Hi ${username},</p>
     
     <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
-      Thank you for joining the Farm2Table waitlist! We're building a platform that connects you directly with local farmers to access fresh, locally-sourced produce. We're excited to have you as part of our growing community.
+      Thank you for joining the Farm2Table waitlist! We&apos;re building Tampa Bay&apos;s online farmers market, connecting you directly with local farms for fresh produce, meat, eggs, honey, and more. We&apos;re excited to have you as part of our community.
     </p>
     
     <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
-      We'll notify you as soon as Farm2Table launches in your area. You'll be among the first to enjoy farm-fresh produce delivered from local growers to your table. In the meantime, if you have any questions, feel free to reply to this email.
+      We&apos;ll notify you as soon as we launch. You&apos;ll be among the first to shop local farms from your couch. In the meantime, if you have any questions, feel free to reply to this email.
     </p>
     
     <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
-      Stay tuned for updates about local farmers, seasonal produce, and sustainable farming practices in your community.
+      Stay tuned for updates about Tampa Bay farmers, seasonal produce, and what&apos;s coming to your table.
     </p>
     
     <p style="font-size: 16px; line-height: 26px; margin-top: 20px;">
