@@ -21,7 +21,7 @@ export const submitFarmerApplication = mutation({
   handler: async (ctx, args): Promise<{ applicationId: string }> => {
     const existing = await ctx.db
       .query("farmerApplications")
-      .filter((q) => q.eq(q.field("email"), args.email))
+      .withIndex("by_email", (q) => q.eq("email", args.email))
       .first();
 
     if (existing) {

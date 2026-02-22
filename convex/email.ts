@@ -3,6 +3,15 @@ import { components, internal } from "./_generated/api";
 import { internalMutation, internalAction } from "./_generated/server";
 import { v } from "convex/values";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // Initialize Resend with the component - disable test mode for production
 export const resend = new Resend(components.resend, {
   testMode: false,
@@ -91,7 +100,8 @@ export const sendWaitlistEmail = internalAction({
 
 // Farmer application confirmation email HTML
 const getFarmerApplicationEmailHTML = (contactName: string, farmName: string) => {
-  const firstName = contactName.split(" ")[0] || contactName;
+  const firstName = escapeHtml(contactName.split(" ")[0] || contactName);
+  const safeFarmName = escapeHtml(farmName);
 
   return `
 <!DOCTYPE html>
@@ -105,9 +115,9 @@ const getFarmerApplicationEmailHTML = (contactName: string, farmName: string) =>
     <div style="font-size: 48px; text-align: center; margin: 0 auto; padding-bottom: 20px;">🌾</div>
     
     <p style="font-size: 18px; line-height: 28px;">Hi ${firstName},</p>
-    
+
     <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
-      Thank you for applying to be a Founding Farmer with Farm2Table.  We received your application for <strong>${farmName}</strong> and we&apos;re excited to learn more.
+      Thank you for applying to be a Founding Farmer with Farm2Table.  We received your application for <strong>${safeFarmName}</strong> and we&apos;re excited to learn more.
     </p>
     
     <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
@@ -154,8 +164,8 @@ export const sendNewFarmerNotificationEmail = internalAction({
 </head>
 <body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 24px; color: #333; margin: 0;">
   <p style="font-size: 18px;">You've got a founding farmer! 🌾</p>
-  <p style="font-size: 16px;"><strong>${args.farmName}</strong></p>
-  <p style="font-size: 16px;">Contact: ${args.contactName}</p>
+  <p style="font-size: 16px;"><strong>${escapeHtml(args.farmName)}</strong></p>
+  <p style="font-size: 16px;">Contact: ${escapeHtml(args.contactName)}</p>
 </body>
 </html>
     `.trim();

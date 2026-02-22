@@ -31,36 +31,41 @@ export default function FoundingFarmersPage() {
     setLoading(true);
     const utm = getUtmParams();
 
-    const promise = submitApplication({
-      farmName: data.farmName,
-      contactName: data.contactName,
-      email: data.email,
-      phone: data.phone,
-      zipCode: data.zipCode,
-      whatSells: data.whatSells,
-      description: data.description,
-      howSells: data.howSells,
-      deliveryPickupOptions: data.deliveryPickupOptions,
-      websiteOrSocial: data.websiteOrSocial || undefined,
-      ...utm,
-    });
-
-    toast.promise(promise, {
-      pending: "Submitting your application...",
-      success: "Thank you! We'll be in touch soon.",
-      error: {
-        render({ data }) {
-          const msg =
-            data instanceof Error ? data.message : "Something went wrong.";
-          if (msg.includes("already been submitted")) {
-            return "An application with this email has already been submitted.";
-          }
-          return "Something went wrong. Please try again.";
+    try {
+      await toast.promise(
+        submitApplication({
+          farmName: data.farmName,
+          contactName: data.contactName,
+          email: data.email,
+          phone: data.phone,
+          zipCode: data.zipCode,
+          whatSells: data.whatSells,
+          description: data.description,
+          howSells: data.howSells,
+          deliveryPickupOptions: data.deliveryPickupOptions,
+          websiteOrSocial: data.websiteOrSocial || undefined,
+          ...utm,
+        }),
+        {
+          pending: "Submitting your application...",
+          success: "Thank you! We'll be in touch soon.",
+          error: {
+            render({ data }) {
+              const msg =
+                data instanceof Error
+                  ? data.message
+                  : "Something went wrong.";
+              if (msg.includes("already been submitted")) {
+                return "An application with this email has already been submitted.";
+              }
+              return "Something went wrong. Please try again.";
+            },
+          },
         },
-      },
-    });
-
-    promise.finally(() => setLoading(false));
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

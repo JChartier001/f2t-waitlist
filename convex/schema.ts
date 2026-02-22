@@ -24,7 +24,7 @@ const schema = defineSchema({
     utmMedium: v.optional(v.string()),
     utmCampaign: v.optional(v.string()),
     createdAt: v.number(),
-  }),
+  }).index("by_email", ["email"]),
 });
 export default schema;
 export type Schema = typeof schema;
