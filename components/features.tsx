@@ -15,12 +15,12 @@ const features = [
   {
     icon: <Map className="text-primary w-6 h-6" />,
     title: "Local First",
-    description: "Empowering producers and communities at the source.",
+    description: "Tampa Bay farms and artisans at the source.",
   },
   {
     icon: <Navigation className="text-primary w-6 h-6" />,
     title: "Direct Access",
-    description: "Shop straight from growers, makers, and producers.",
+    description: "Buy straight from farms. No middlemen, no mystery.",
   },
   {
     icon: <Clock4Icon className="text-primary w-6 h-6" />,
@@ -30,12 +30,12 @@ const features = [
   {
     icon: <Smartphone className="text-primary w-6 h-6" />,
     title: "Effortless Ordering",
-    description: "Smart, simple tools for busy lives.",
+    description: "Shop local farms from your couch.",
   },
   {
     icon: <Zap className="text-primary w-6 h-6" />,
     title: "Community Powered",
-    description: "Built to strengthen food connections everywhere.",
+    description: "Connecting Tampa Bay neighbors with local growers.",
   },
   {
     icon: <Heart className="text-primary w-6 h-6" />,
@@ -45,7 +45,7 @@ const features = [
   {
     icon: <Upload className="text-primary w-6 h-6" />,
     title: "Transparent Sourcing",
-    description: "See who made it, how it’s made, and where.",
+    description: "Know your farmer. See who grew it and how.",
   },
   {
     icon: <Sparkles className="text-primary w-6 h-6" />,

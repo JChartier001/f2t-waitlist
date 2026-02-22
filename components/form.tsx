@@ -8,6 +8,7 @@ import { containerVariants, itemVariants } from "@/lib/animation-variants";
 export interface FormData {
   name: string;
   email: string;
+  zipCode?: string;
   userType: "vendor" | "consumer";
 }
 
@@ -27,12 +28,16 @@ export default function Form({ onSubmit, loading }: FormProps) {
       userType: "consumer",
       name: "",
       email: "",
+      zipCode: "",
     },
   });
 
   const handleFormSubmit = async (data: FormData) => {
     try {
-      await onSubmit(data);
+      await onSubmit({
+        ...data,
+        zipCode: data.zipCode?.trim() || undefined,
+      });
       // Reset form only after successful submission
       reset();
     } catch (error) {
@@ -89,6 +94,14 @@ export default function Form({ onSubmit, loading }: FormProps) {
             {errors.name && (
               <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
             )}
+          </div>
+          <div>
+            <Input
+              type="text"
+              placeholder="Zip code"
+              {...register("zipCode")}
+              className="w-full bg-white/80 border-gray-300 text-gray-900 placeholder:text-gray-500"
+            />
           </div>
           <div className="flex gap-3 w-full">
             <div className="flex-1">

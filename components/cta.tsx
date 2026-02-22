@@ -13,14 +13,14 @@ export default function CTA() {
       <motion.div variants={itemVariants}>
         <TextBlur
           className="text-center text-4xl font-bold tracking-tight sm:text-6xl text-foreground"
-          text="Where local food meets modern connection."
+          text="Tampa Bay's Online Farmers Market"
         />
       </motion.div>
 
       <motion.div variants={itemVariants}>
         <TextBlur
           className="mx-auto max-w-[600px] text-center text-base text-muted-foreground sm:text-lg px-4 py-3 rounded-lg"
-          text="Born in Florida. Built for farmers, makers, and neighbors everywhere. We're reimagining how local food connects communities — starting with you."
+          text="Fresh produce, meat, eggs, honey, and more, direct from Tampa Bay farms. Launching soon. Join the waitlist for early access."
           duration={0.8}
         />
       </motion.div>

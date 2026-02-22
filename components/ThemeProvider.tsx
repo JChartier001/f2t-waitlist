@@ -8,6 +8,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const ThemeContext = createContext<
   | {
       theme: string;
+      resolvedTheme: string | undefined;
       setTheme: (theme: string) => void;
     }
   | undefined
@@ -39,7 +40,7 @@ function ThemeContextProvider({
   children: React.ReactNode;
   mounted: boolean;
 }) {
-  const { theme, setTheme } = useNextTheme();
+  const { theme, resolvedTheme, setTheme } = useNextTheme();
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
@@ -48,6 +49,7 @@ function ThemeContextProvider({
 
   const value = {
     theme: theme || "system",
+    resolvedTheme,
     setTheme: (theme: string) => setTheme(theme),
   };
 
