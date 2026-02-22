@@ -26,7 +26,7 @@ export default function SocialProof() {
         ))}
       </div>
       <p className="text-sm text-muted-foreground">
-        Join {count + 17} others already growing with us 🌱!
+        Join {count + 17} others on the waitlist 🌱
       </p>
     </motion.div>
   );

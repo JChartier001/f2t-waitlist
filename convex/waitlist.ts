@@ -8,6 +8,7 @@ export const addToWaitlist = mutation({
     name: v.string(),
     email: v.string(),
     userType: v.union(v.literal("vendor"), v.literal("consumer")),
+    zipCode: v.optional(v.string()),
   },
   handler: async (
     ctx,
@@ -27,13 +28,15 @@ export const addToWaitlist = mutation({
       // Check if any details are different
       const detailsChanged =
         (existing.name !== undefined && existing.name !== args.name) ||
-        (existing.userType !== undefined && existing.userType !== args.userType);
+        (existing.userType !== undefined && existing.userType !== args.userType) ||
+        (existing.zipCode !== args.zipCode);
 
       if (detailsChanged) {
         // Update the existing entry
         await ctx.db.patch(existing._id, {
           name: args.name,
           userType: args.userType,
+          zipCode: args.zipCode,
         });
         return {
           waitlistId: existing._id,
@@ -51,6 +54,7 @@ export const addToWaitlist = mutation({
       name: args.name,
       email: args.email,
       userType: args.userType,
+      zipCode: args.zipCode,
       createdAt: Date.now(),
     });
 
@@ -108,6 +112,7 @@ export const joinWaitlist = action({
     name: v.string(),
     email: v.string(),
     userType: v.union(v.literal("vendor"), v.literal("consumer")),
+    zipCode: v.optional(v.string()),
   },
   handler: async (
     ctx,
@@ -127,6 +132,7 @@ export const joinWaitlist = action({
       name: args.name,
       email: args.email,
       userType: args.userType,
+      zipCode: args.zipCode,
     });
 
     // Send welcome email only for new signups, not updates
