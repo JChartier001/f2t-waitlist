@@ -98,6 +98,171 @@ export const sendWaitlistEmail = internalAction({
   },
 });
 
+/** HTML template for the "please specify vendor/consumer + location" follow-up email. */
+export function getUserTypeFollowUpEmailHTML(): string {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D5B7 50%, #FFB84D 100%); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px 0; color: #cccccc; margin: 0;">
+  <div style="margin: 0 auto; padding: 24px 32px 48px; background-color: #1a1a1a; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); max-width: 600px;">
+    <div style="font-size: 48px; text-align: center; margin: 0 auto; padding-bottom: 20px;">🥕</div>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">Hi there,</p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      You signed up for Farm2Table a while back, and I&apos;m so glad you did. We&apos;re getting closer to launch and I wanted to check in.
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      Farm2Table is an online farmers market connecting local farms directly with people who want fresh, local food. No middlemen.
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      I&apos;m building out our founding community right now and I&apos;d love to know a little more about you. Could you hit reply and let me know:
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      <strong>1.</strong> Are you a farm or food producer, or are you someone looking to buy local food?<br />
+      <strong>2.</strong> What city/area are you located in?
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      That&apos;s it. Two quick answers.
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      If you&apos;re a local farm or producer, I&apos;m actively looking for founding farmers to partner with as we launch. Founding farmers get early access, priority placement, and a direct line to me as we build this together. I&apos;d love to talk more if that sounds like a fit.
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      And if you&apos;re here for the food, don&apos;t worry. I&apos;m working hard to bring the best local farms to your area. Your answers help me know where to focus.
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      Thanks for being part of this from the beginning.
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-top: 20px;">
+      Jen<br />
+      Founder, Farm2Table
+    </p>
+
+    <hr style="border-color: #cccccc; margin: 20px 0;">
+
+    <p style="color: #8c8c8c; font-size: 12px;">
+      You received this email because you signed up for the Farm2Table waitlist. If you believe this is a mistake, feel free to ignore this email.
+    </p>
+  </div>
+</body>
+</html>
+  `.trim();
+}
+
+/** HTML template for the location follow-up email. Different copy for vendors (with founding farmer pitch) vs consumers. */
+export function getLocationFollowUpEmailHTML(
+  userType: "vendor" | "consumer",
+): string {
+  const vendorBlock = `
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      I&apos;m actively looking for founding farmers to partner with as we launch. Founding farmers get early access, priority placement, and a direct line to me as we build this together. If that sounds like a fit, just reply and I&apos;d love to talk. Or you can apply at <a href="https://farm2table.app/founding-farmers?utm_source=location_followup_email&amp;utm_medium=email&amp;utm_campaign=vendor_location" style="color: #FFB84D;">farm2table.app/founding-farmers</a>.
+    </p>
+  `;
+
+  const consumerBlock = `
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      I&apos;m working hard to bring the best local farms to your area. Your location helps me know where to focus first.
+    </p>
+  `;
+
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="background: linear-gradient(135deg, #F5E6D3 0%, #E8D5B7 50%, #FFB84D 100%); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px 0; color: #cccccc; margin: 0;">
+  <div style="margin: 0 auto; padding: 24px 32px 48px; background-color: #1a1a1a; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); max-width: 600px;">
+    <div style="font-size: 48px; text-align: center; margin: 0 auto; padding-bottom: 20px;">🥕</div>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">Hi there,</p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      You signed up for Farm2Table and we&apos;re getting closer to launch. One quick question: what city or area are you located in? Just hit reply with your city or zip code.
+    </p>
+
+    ${userType === "vendor" ? vendorBlock : consumerBlock}
+
+    <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
+      Thanks for being part of this.
+    </p>
+
+    <p style="font-size: 16px; line-height: 26px; margin-top: 20px;">
+      Jen<br />
+      Founder, Farm2Table
+    </p>
+
+    <hr style="border-color: #cccccc; margin: 20px 0;">
+
+    <p style="color: #8c8c8c; font-size: 12px;">
+      You received this email because you signed up for the Farm2Table waitlist. If you believe this is a mistake, feel free to ignore this email.
+    </p>
+  </div>
+</body>
+</html>
+  `.trim();
+}
+
+/** Internal action to send the user-type follow-up email. Uses custom subject and HTML. */
+export const sendUserTypeFollowUpEmail = internalAction({
+  args: {
+    email: v.string(),
+    waitlistId: v.id("waitlist"),
+    subject: v.string(),
+    html: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.runMutation(internal.email.sendEmail, {
+      from: "Farm2Table <customerservice@farm2table.app>",
+      to: args.email,
+      subject: args.subject,
+      html: args.html,
+    });
+    await ctx.runMutation(internal.waitlist.markUserTypeFollowUpSent, {
+      waitlistId: args.waitlistId,
+    });
+  },
+});
+
+/** Internal action to send the location follow-up email. Tailors copy for vendor vs consumer. */
+export const sendLocationFollowUpEmail = internalAction({
+  args: {
+    email: v.string(),
+    waitlistId: v.id("waitlist"),
+    userType: v.union(v.literal("vendor"), v.literal("consumer")),
+    subject: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const emailSubject =
+      args.subject ?? "Quick question from Farm2Table: where are you located?";
+    const html = getLocationFollowUpEmailHTML(args.userType);
+
+    await ctx.runMutation(internal.email.sendEmail, {
+      from: "Farm2Table <customerservice@farm2table.app>",
+      to: args.email,
+      subject: emailSubject,
+      html,
+    });
+    await ctx.runMutation(internal.waitlist.markLocationFollowUpSent, {
+      waitlistId: args.waitlistId,
+    });
+  },
+});
+
 // Farmer application confirmation email HTML
 const getFarmerApplicationEmailHTML = (contactName: string, farmName: string) => {
   const firstName = escapeHtml(contactName.split(" ")[0] || contactName);
@@ -121,7 +286,7 @@ const getFarmerApplicationEmailHTML = (contactName: string, farmName: string) =>
     </p>
     
     <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
-      We&apos;re a small team and we&apos;re keeping our founding group to 10–15 farms so we can build real relationships. We&apos;ll review your application and reach out within the next few days to chat about your farm and how we can help you reach more customers in Tampa Bay.
+      We&apos;re a small team and we&apos;re keeping our founding group to 10 to 15 farms so we can build real relationships. We&apos;ll review your application and reach out within the next few days to chat about your farm and how we can help you reach more customers in Tampa Bay.
     </p>
     
     <p style="font-size: 16px; line-height: 26px; margin-bottom: 20px;">
