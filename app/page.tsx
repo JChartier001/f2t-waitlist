@@ -4,6 +4,16 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
+
+function getUtmParams() {
+  if (typeof window === "undefined") return {};
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utmSource: params.get("utm_source") ?? undefined,
+    utmMedium: params.get("utm_medium") ?? undefined,
+    utmCampaign: params.get("utm_campaign") ?? undefined,
+  };
+}
 import CTA from "@/components/cta";
 import Form, { FormData } from "@/components/form";
 import SocialProof from "@/components/social-proof";
@@ -23,7 +33,8 @@ export default function Home() {
   const handleSubmit = async (data: FormData) => {
     setLoading(true);
 
-    const promise = addToWaitlist(data);
+    const utm = getUtmParams();
+    const promise = addToWaitlist({ ...data, ...utm });
 
     toast.promise(promise, {
       pending: "Adding you to our harvest list... 🌾",
