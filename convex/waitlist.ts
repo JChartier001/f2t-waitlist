@@ -3,6 +3,12 @@ import { mutation, query, internalMutation, action, type ActionCtx } from "./_ge
 import { api, internal } from "./_generated/api";
 import { getUserTypeFollowUpEmailHTML } from "./email";
 
+const TEST_EMAIL_DOMAINS = ["example.com", "test.com"];
+function isTestEmail(email: string): boolean {
+  const domain = email.split("@")[1]?.toLowerCase();
+  return !!domain && TEST_EMAIL_DOMAINS.includes(domain);
+}
+
 export const addToWaitlist = mutation({
   args: {
     name: v.string(),
@@ -356,8 +362,8 @@ export const joinWaitlist = action({
       zipCode: args.zipCode,
     });
 
-    // Send welcome email only for new signups, not updates
-    if (!result.isUpdate) {
+    // Send welcome email only for new signups, not updates or test emails
+    if (!result.isUpdate && !isTestEmail(args.email)) {
       try {
         await ctx.runAction(internal.email.sendWaitlistEmail, {
           email: args.email,

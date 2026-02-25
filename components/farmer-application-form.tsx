@@ -182,10 +182,10 @@ export default function FarmerApplicationForm({
             Brief description
           </label>
           <Textarea
-            placeholder="Tell us about your farm in 2-3 sentences"
+            placeholder="Tell us about your business in 2-3 sentences"
             rows={4}
             {...register("description", {
-              required: "Please describe your farm",
+              required: "Please describe your business",
             })}
             className={inputClassName}
           />
@@ -256,7 +256,7 @@ export default function FarmerApplicationForm({
             variant="shine"
             size="lg"
           >
-            {loading ? "Submitting..." : "Submit Application"}
+            {loading ? "Submitting..." : "Join the Launch"}
           </EnhancedButton>
         </motion.div>
       </motion.form>

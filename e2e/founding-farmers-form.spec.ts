@@ -2,12 +2,12 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Founding Farmers Application Form", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/founding-farmers");
+    await page.goto("/founding-farmers/apply");
   });
 
   test("should display the form correctly", async ({ page }) => {
     await expect(
-      page.getByText("Founding Farmers Application"),
+      page.getByText("Tell Us About Your Business"),
     ).toBeVisible();
 
     // Check all form fields are visible
@@ -24,7 +24,7 @@ test.describe("Founding Farmers Application Form", () => {
       ),
     ).toBeVisible();
     await expect(
-      page.getByPlaceholder("Tell us about your farm in 2-3 sentences"),
+      page.getByPlaceholder("Tell us about your business in 2-3 sentences"),
     ).toBeVisible();
     await expect(
       page.getByPlaceholder(
@@ -40,7 +40,7 @@ test.describe("Founding Farmers Application Form", () => {
 
     // Submit button
     await expect(
-      page.getByRole("button", { name: /submit application/i }),
+      page.getByRole("button", { name: /join the launch/i }),
     ).toBeVisible();
   });
 
@@ -48,7 +48,7 @@ test.describe("Founding Farmers Application Form", () => {
     page,
   }) => {
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     await expect(page.getByText("Farm name is required")).toBeVisible();
@@ -60,7 +60,7 @@ test.describe("Founding Farmers Application Form", () => {
       page.getByText("Please tell us what you sell"),
     ).toBeVisible();
     await expect(
-      page.getByText("Please describe your farm"),
+      page.getByText("Please describe your business"),
     ).toBeVisible();
     await expect(
       page.getByText("Please tell us how you sell"),
@@ -87,7 +87,7 @@ test.describe("Founding Farmers Application Form", () => {
       )
       .fill("Vegetables");
     await page
-      .getByPlaceholder("Tell us about your farm in 2-3 sentences")
+      .getByPlaceholder("Tell us about your business in 2-3 sentences")
       .fill("A small farm.");
     await page
       .getByPlaceholder(
@@ -99,13 +99,13 @@ test.describe("Founding Farmers Application Form", () => {
       .fill("Local delivery");
 
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     // The native browser validation on type="email" blocks submission,
     // so the pending toast should never appear
     await expect(
-      page.getByText(/submitting your application/i),
+      page.getByText(/submitting your information/i),
     ).not.toBeVisible();
   });
 
@@ -114,7 +114,7 @@ test.describe("Founding Farmers Application Form", () => {
   }) => {
     await page.getByPlaceholder("5-digit zip code").fill("123");
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     await expect(
@@ -125,7 +125,7 @@ test.describe("Founding Farmers Application Form", () => {
   test("should accept valid zip code formats", async ({ page }) => {
     await page.getByPlaceholder("5-digit zip code").fill("33602");
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     // Zip code error should NOT appear
@@ -152,7 +152,7 @@ test.describe("Founding Farmers Application Form", () => {
       )
       .fill("Organic vegetables, free-range eggs");
     await page
-      .getByPlaceholder("Tell us about your farm in 2-3 sentences")
+      .getByPlaceholder("Tell us about your business in 2-3 sentences")
       .fill("A small family farm in Tampa Bay.");
     await page
       .getByPlaceholder(
@@ -164,12 +164,12 @@ test.describe("Founding Farmers Application Form", () => {
       .fill("Local delivery within 20 miles");
 
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     // Should show pending toast
     await expect(
-      page.getByText(/submitting your application/i),
+      page.getByText(/submitting your information/i),
     ).toBeVisible();
 
     // Should show success toast
@@ -197,7 +197,7 @@ test.describe("Founding Farmers Application Form", () => {
       )
       .fill("Organic vegetables");
     await page
-      .getByPlaceholder("Tell us about your farm in 2-3 sentences")
+      .getByPlaceholder("Tell us about your business in 2-3 sentences")
       .fill("A small family farm.");
     await page
       .getByPlaceholder(
@@ -209,7 +209,7 @@ test.describe("Founding Farmers Application Form", () => {
       .fill("Local delivery");
 
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     // Wait for success
@@ -236,7 +236,7 @@ test.describe("Founding Farmers Application Form", () => {
       )
       .fill("Organic vegetables");
     await page
-      .getByPlaceholder("Tell us about your farm in 2-3 sentences")
+      .getByPlaceholder("Tell us about your business in 2-3 sentences")
       .fill("A small family farm.");
     await page
       .getByPlaceholder(
@@ -248,7 +248,7 @@ test.describe("Founding Farmers Application Form", () => {
       .fill("Local delivery");
 
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     // Should show duplicate error
@@ -273,7 +273,7 @@ test.describe("Founding Farmers Application Form", () => {
       )
       .fill("Organic vegetables");
     await page
-      .getByPlaceholder("Tell us about your farm in 2-3 sentences")
+      .getByPlaceholder("Tell us about your business in 2-3 sentences")
       .fill("A small family farm.");
     await page
       .getByPlaceholder(
@@ -285,7 +285,7 @@ test.describe("Founding Farmers Application Form", () => {
       .fill("Local delivery");
 
     await page
-      .getByRole("button", { name: /submit application/i })
+      .getByRole("button", { name: /join the launch/i })
       .click();
 
     // Button should show loading state
