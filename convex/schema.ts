@@ -7,6 +7,9 @@ const schema = defineSchema({
     email: v.string(),
     zipCode: v.optional(v.string()),
     userType: v.optional(v.union(v.literal("vendor"), v.literal("consumer"))),
+    utmSource: v.optional(v.string()),
+    utmMedium: v.optional(v.string()),
+    utmCampaign: v.optional(v.string()),
     createdAt: v.number(),
     /** Set when we send the "please specify vendor/consumer" follow-up email. Prevents duplicate sends. */
     userTypeFollowUpSentAt: v.optional(v.number()),

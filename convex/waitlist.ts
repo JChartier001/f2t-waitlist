@@ -15,6 +15,9 @@ export const addToWaitlist = mutation({
     email: v.string(),
     userType: v.union(v.literal("vendor"), v.literal("consumer")),
     zipCode: v.optional(v.string()),
+    utmSource: v.optional(v.string()),
+    utmMedium: v.optional(v.string()),
+    utmCampaign: v.optional(v.string()),
   },
   handler: async (
     ctx,
@@ -61,6 +64,9 @@ export const addToWaitlist = mutation({
       email: args.email,
       userType: args.userType,
       zipCode: args.zipCode,
+      utmSource: args.utmSource,
+      utmMedium: args.utmMedium,
+      utmCampaign: args.utmCampaign,
       createdAt: Date.now(),
     });
 
@@ -340,6 +346,9 @@ export const joinWaitlist = action({
     email: v.string(),
     userType: v.union(v.literal("vendor"), v.literal("consumer")),
     zipCode: v.optional(v.string()),
+    utmSource: v.optional(v.string()),
+    utmMedium: v.optional(v.string()),
+    utmCampaign: v.optional(v.string()),
   },
   handler: async (
     ctx,
@@ -360,6 +369,9 @@ export const joinWaitlist = action({
       email: args.email,
       userType: args.userType,
       zipCode: args.zipCode,
+      utmSource: args.utmSource,
+      utmMedium: args.utmMedium,
+      utmCampaign: args.utmCampaign,
     });
 
     // Send welcome email only for new signups, not updates or test emails
